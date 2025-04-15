@@ -3,9 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <title>Meu Primeiro Site</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f0f8ff;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    #local {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <h1>Bem-vinda ao meu site!</h1>
-  <p>Feito com GitHub Pages.</p>
+  <p>Clique no botão abaixo para ver sua localização:</p>
+  
+  <button onclick="getLocation()">Mostrar minha localização</button>
+  <p id="local"></p>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        document.getElementById("local").innerHTML = "Geolocalização não é suportada pelo seu navegador.";
+      }
+    }
+
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      document.getElementById("local").innerHTML = 
+        `Latitude: ${lat.toFixed(5)}<br>Longitude: ${lon.toFixed(5)}`;
+    }
+
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          document.getElementById("local").innerHTML = "Permissão negada para acessar a localização.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          document.getElementById("local").innerHTML = "Informações de localização indisponíveis.";
+          break;
+        case error.TIMEOUT:
+          document.getElementById("local").innerHTML = "A solicitação de localização expirou.";
+          break;
+        default:
+          document.getElementById("local").innerHTML = "Erro desconhecido.";
+          break;
+      }
+    }
+  </script>
 </body>
-</html>
+</html>adiciona geolocalização
